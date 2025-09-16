@@ -52,7 +52,7 @@ export default function App() {
     if (diffHours > 0) {
       diffText = (
         <span>
-          {t.name} is <strong>{diffHours} hour{diffHours !== 1 ? "s" : ""}</strong> ahead of {sourceLoc.name}
+          {t.name} is <strong>{diffHours} hour{diffHours !== 1 ? "s" : ""} ahead</strong> of {sourceLoc.name}
         </span>
       );
     } else if (diffHours < 0) {
