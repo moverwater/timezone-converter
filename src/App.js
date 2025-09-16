@@ -42,13 +42,13 @@ export default function App() {
       if (diffHours > 0) {
         diffText = (
           <span>
-            {t.name} is <strong>{diffHours}</strong> hour{diffHours !== 1 ? "s" : ""} ahead of {sourceLoc.name}
+            {t.name} is <strong>{diffHours} hour{diffHours !== 1 ? "s" : ""} ahead</strong> of {sourceLoc.name}
           </span>
         );
       } else if (diffHours < 0) {
         diffText = (
           <span>
-            {t.name} is <strong>{Math.abs(diffHours)}</strong> hour{diffHours !== -1 ? "s" : ""} behind {sourceLoc.name}
+            {t.name} is <strong>{Math.abs(diffHours)} hour{diffHours !== -1 ? "s" : ""} behind</strong> {sourceLoc.name}
           </span>
         );
       } else {
