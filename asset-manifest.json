@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/timezone-converter/static/css/main.e1f50854.css",
+    "main.js": "/timezone-converter/static/js/main.4277715d.js",
+    "static/js/453.3922217a.chunk.js": "/timezone-converter/static/js/453.3922217a.chunk.js",
+    "index.html": "/timezone-converter/index.html",
+    "main.e1f50854.css.map": "/timezone-converter/static/css/main.e1f50854.css.map",
+    "main.4277715d.js.map": "/timezone-converter/static/js/main.4277715d.js.map",
+    "453.3922217a.chunk.js.map": "/timezone-converter/static/js/453.3922217a.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.e1f50854.css",
+    "static/js/main.4277715d.js"
+  ]
+}
