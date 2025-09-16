@@ -24,50 +24,60 @@ export default function App() {
 
   // Recalculate results whenever source, datetime, or targets change
   useEffect(() => {
-    if (!sourceLoc || targetLocs.length === 0) {
-      setResults([]);
-      return;
+  if (!sourceLoc || targetLocs.length === 0) {
+    setResults([]);
+    return;
+  }
+
+  const sourceZone = tzlookup(sourceLoc.lat, sourceLoc.lon);
+
+  const dtSource = DateTime.fromObject(
+    {
+      year: datetime.getFullYear(),
+      month: datetime.getMonth() + 1,
+      day: datetime.getDate(),
+      hour: datetime.getHours(),
+      minute: datetime.getMinutes(),
+    },
+    { zone: sourceZone }
+  );
+
+  const table = targetLocs.map((t) => {
+    const tZone = tzlookup(t.lat, t.lon);
+    const dtTarget = dtSource.setZone(tZone);
+
+    const diffHours = (dtTarget.offset - dtSource.offset) / 60;
+
+    let diffText = null;
+    if (diffHours > 0) {
+      diffText = (
+        <span>
+          {t.name} is <strong>{diffHours}</strong> hour{diffHours !== 1 ? "s" : ""} ahead of {sourceLoc.name}
+        </span>
+      );
+    } else if (diffHours < 0) {
+      diffText = (
+        <span>
+          {t.name} is <strong>{Math.abs(diffHours)}</strong> hour{diffHours !== -1 ? "s" : ""} behind {sourceLoc.name}
+        </span>
+      );
+    } else {
+      diffText = (
+        <span>
+          {t.name} is <strong>the same time</strong> as {sourceLoc.name}
+        </span>
+      );
     }
 
-    const sourceZone = tzlookup(sourceLoc.lat, sourceLoc.lon);
-    const dtSource = DateTime.fromJSDate(datetime, { zone: sourceZone });
+    return {
+      location: t.name,
+      localTime: dtTarget.toFormat("dd/MM/yyyy HH:mm"),
+      difference: diffText,
+    };
+  });
 
-    const table = targetLocs.map((t) => {
-      const tZone = tzlookup(t.lat, t.lon);
-      const dtTarget = dtSource.setZone(tZone);
-
-      const diffHours = (dtTarget.offset - dtSource.offset) / 60;
-      let diffText = null;
-
-      if (diffHours > 0) {
-        diffText = (
-          <span>
-            {t.name} is <strong>{diffHours} hour{diffHours !== 1 ? "s" : ""} ahead</strong> of {sourceLoc.name}
-          </span>
-        );
-      } else if (diffHours < 0) {
-        diffText = (
-          <span>
-            {t.name} is <strong>{Math.abs(diffHours)} hour{diffHours !== -1 ? "s" : ""} behind</strong> {sourceLoc.name}
-          </span>
-        );
-      } else {
-        diffText = (
-          <span>
-            {t.name} is <strong>the same time</strong> as {sourceLoc.name}
-          </span>
-        );
-      }
-
-      return {
-        location: t.name,
-        localTime: dtTarget.toFormat("dd/MM/yyyy HH:mm"),
-        difference: diffText,
-      };
-    });
-
-    setResults(table);
-  }, [sourceLoc, datetime, targetLocs]);
+  setResults(table);
+}, [sourceLoc, datetime, targetLocs]);
 
   return (
     <div style={{ padding: "2rem", maxWidth: "600px", margin: "auto" }}>
